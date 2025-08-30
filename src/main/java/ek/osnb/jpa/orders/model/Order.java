@@ -2,6 +2,7 @@ package ek.osnb.jpa.orders.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import ek.osnb.jpa.common.model.BaseEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -19,7 +20,7 @@ public class Order extends BaseEntity {
     private OrderStatus status;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<OrderLine> orderLines = new ArrayList<>();
 
     public Order() {}
