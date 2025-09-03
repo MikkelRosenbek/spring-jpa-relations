@@ -9,7 +9,6 @@ import ek.osnb.jpa.orders.model.OrderLine;
 import ek.osnb.jpa.orders.model.OrderStatus;
 import ek.osnb.jpa.orders.repository.OrderLineRepository;
 import ek.osnb.jpa.orders.repository.OrderRepository;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -122,11 +121,11 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public OrderDto updateOrderStatus(Long id, OrderUpdateDto orderupdateDto) {
-        Optional<Order> exisitngOrder = orderRepository.findById(id);
-        if (exisitngOrder.isEmpty()) {
+        Optional<Order> existingOrder = orderRepository.findById(id);
+        if (existingOrder.isEmpty()) {
             throw new RuntimeException("Order not found with id: " + id);
         }
-        Order order = exisitngOrder.get();
+        Order order = existingOrder.get();
         order.setStatus(OrderStatus.valueOf(orderupdateDto.status()));
         Order updatedOrder = orderRepository.save(order);
         return OrderMapper.toDto(updatedOrder);

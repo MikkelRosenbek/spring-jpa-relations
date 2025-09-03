@@ -75,8 +75,8 @@ public class InitData implements CommandLineRunner {
         phone.setName("Smartphone");
         phone.setPrice(1400);
 
-        novel.getCategories().add(books);
-        phone.getCategories().add(electronics);
+       novel.addCategory(books);
+        phone.addCategory(electronics);
 
         // save the products
         productRepository.saveAll(List.of(novel, phone));

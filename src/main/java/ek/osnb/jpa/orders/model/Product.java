@@ -18,6 +18,9 @@ public class Product {
     @ManyToMany
     private Set<Category> categories = new HashSet<>();
 
+
+
+
     public Product(Long id, String name, double price) {
         this.id = id;
         this.name = name;
@@ -58,4 +61,20 @@ public class Product {
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
     }
+
+
+    public void addCategory(Category category) {
+        if(category == null) return;
+        if (this.categories.add(category)) {
+            category.addProduct(this);
+        }
+    }
+
+    public void removeCategory(Category category) {
+        if (category == null) return;
+        if (this.categories.remove(category)) {
+            category.removeProduct(this);
+        }
+    }
+
 }

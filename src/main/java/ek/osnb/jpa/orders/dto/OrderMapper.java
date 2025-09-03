@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderMapper {
+
     public static OrderDto toDto(Order order) {
         List<OrderLineDto> orderLines = new ArrayList<>();
 
