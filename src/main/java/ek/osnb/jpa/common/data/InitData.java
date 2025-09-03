@@ -3,8 +3,12 @@ package ek.osnb.jpa.common.data;
 import ek.osnb.jpa.orders.model.Order;
 import ek.osnb.jpa.orders.model.OrderLine;
 import ek.osnb.jpa.orders.model.OrderStatus;
+import ek.osnb.jpa.orders.model.Product;
+import ek.osnb.jpa.orders.repository.CategoryRepository;
 import ek.osnb.jpa.orders.repository.OrderLineRepository;
 import ek.osnb.jpa.orders.repository.OrderRepository;
+import ek.osnb.jpa.orders.repository.ProductRepository;
+import ek.osnb.jpa.orders.model.Category;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +21,15 @@ public class InitData implements CommandLineRunner {
 
     private final OrderRepository orderRepository;
     private final OrderLineRepository orderLineRepository;
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
-    public InitData(OrderRepository orderRepository, OrderLineRepository orderLineRepository) {
+
+    public InitData(OrderRepository orderRepository, OrderLineRepository orderLineRepository, CategoryRepository categoryRepository, ProductRepository productRepositroy) {
         this.orderRepository = orderRepository;
         this.orderLineRepository = orderLineRepository;
+        this.productRepository = productRepositroy;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -46,5 +55,32 @@ public class InitData implements CommandLineRunner {
         order2.addOrderLine(orderLine5);
 
         orderLineRepository.saveAll(List.of(orderLine1, orderLine2, orderLine3, orderLine4, orderLine5));
+
+
+
+        Category electronics = new Category();
+        electronics.setName("Electronics");
+
+        Category books = new Category();
+        books.setName("Books");
+
+        // save the categories
+        categoryRepository.saveAll(List.of(electronics, books));
+
+        Product novel = new Product();
+        novel.setName("Novel");
+        novel.setPrice(120);
+
+        Product phone = new Product();
+        phone.setName("Smartphone");
+        phone.setPrice(1400);
+
+        novel.getCategories().add(books);
+        phone.getCategories().add(electronics);
+
+        // save the products
+        productRepository.saveAll(List.of(novel, phone));
     }
+
+
 }
