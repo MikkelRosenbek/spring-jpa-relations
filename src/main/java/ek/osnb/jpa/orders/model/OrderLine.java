@@ -3,41 +3,34 @@ package ek.osnb.jpa.orders.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import ek.osnb.jpa.common.model.BaseEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 @Entity
 public class OrderLine extends BaseEntity {
 
-    private String product;
-    private double unitPrice;
+    @ManyToOne
+    private Product product;
     private int quantity;
 
 
     @ManyToOne
     private Order order;
 
+
     public OrderLine() {}
 
-    public OrderLine(String product, double unitPrice, int quantity) {
+    public OrderLine(Product product, int quantity) {
         this.product = product;
-        this.unitPrice = unitPrice;
         this.quantity = quantity;
     }
 
-    public String getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(String product) {
+    public void setProduct(Product product) {
         this.product = product;
-    }
-
-    public double getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(double unitPrice) {
-        this.unitPrice = unitPrice;
     }
 
     public int getQuantity() {

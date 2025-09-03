@@ -1,4 +1,6 @@
 package ek.osnb.jpa.orders.dto;
 
-public record OrderLineDto(Long id, double unitPrice, int quantity, String product) {
+import ek.osnb.jpa.orders.model.Product;
+
+public record OrderLineDto(Long id, int quantity, Product product) {
 }
