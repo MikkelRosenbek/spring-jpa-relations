@@ -1,14 +1,7 @@
 package ek.osnb.jpa.common.data;
 
-import ek.osnb.jpa.orders.model.Order;
-import ek.osnb.jpa.orders.model.OrderLine;
-import ek.osnb.jpa.orders.model.OrderStatus;
-import ek.osnb.jpa.orders.model.Product;
-import ek.osnb.jpa.orders.repository.CategoryRepository;
-import ek.osnb.jpa.orders.repository.OrderLineRepository;
-import ek.osnb.jpa.orders.repository.OrderRepository;
-import ek.osnb.jpa.orders.repository.ProductRepository;
-import ek.osnb.jpa.orders.model.Category;
+import ek.osnb.jpa.orders.model.*;
+import ek.osnb.jpa.orders.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +16,18 @@ public class InitData implements CommandLineRunner {
     private final OrderLineRepository orderLineRepository;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final CustomerRepository customerRepository;
+    private final ProfileRepository profileRepository;
 
 
-    public InitData(OrderRepository orderRepository, OrderLineRepository orderLineRepository, CategoryRepository categoryRepository, ProductRepository productRepositroy) {
+    public InitData(OrderRepository orderRepository, OrderLineRepository orderLineRepository, CategoryRepository categoryRepository,
+                    ProductRepository productRepositroy, CustomerRepository customerRepository, ProfileRepository profileRepository) {
         this.orderRepository = orderRepository;
         this.orderLineRepository = orderLineRepository;
         this.productRepository = productRepositroy;
         this.categoryRepository = categoryRepository;
+        this.customerRepository = customerRepository;
+        this.profileRepository = profileRepository;
     }
 
     @Override
@@ -42,7 +40,7 @@ public class InitData implements CommandLineRunner {
         Category books = new Category();
         books.setName("Books");
 
-        categoryRepository.saveAll(List.of(electronics,books));
+        categoryRepository.saveAll(List.of(electronics, books));
 
         //Create products
         Product novel = new Product();
@@ -67,18 +65,28 @@ public class InitData implements CommandLineRunner {
         Order order2 = new Order(LocalDate.now(), OrderStatus.PENDING);
         orderRepository.saveAll(List.of(order1, order2));
 
-        // 4️⃣ Create order lines using actual Product entities
+        //Create order lines
         OrderLine ol1 = new OrderLine(novel, 2);    // 2 novels
         OrderLine ol2 = new OrderLine(phone, 1);    // 1 phone
         OrderLine ol3 = new OrderLine(laptop, 1);   // 1 laptop
 
-        // 5️⃣ Add order lines to orders
         order1.addOrderLine(ol1);
         order1.addOrderLine(ol2);
         order2.addOrderLine(ol3);
 
-        // 6️⃣ Save order lines
         orderLineRepository.saveAll(List.of(ol1, ol2, ol3));
+
+        // ✅ Create customers
+        Customer customer1 = new Customer("Mikkel Rosenbek");
+        Customer customer2 = new Customer("Anna Jensen");
+        customerRepository.saveAll(List.of(customer1, customer2));
+
+        // ✅ Create profiles for customers
+        Profile profile1 = new Profile("I love coding", customer1);
+        Profile profile2 = new Profile("Book enthusiast", customer2);
+        profileRepository.saveAll(List.of(profile1, profile2));
+
+        System.out.println("Initialized customers and profiles!");
 
 
 //        Order order1 = new Order(LocalDate.now(), OrderStatus.SHIPPED);
